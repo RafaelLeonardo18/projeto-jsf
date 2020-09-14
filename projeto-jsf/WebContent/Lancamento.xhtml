@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+	  
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>Lançamento</title>
+	</h:head>
+	
+	<h:body style="margin-top:2%; margin-left:5%;">
+	
+	<!-- Formulário dos lançamentos -->
+		<h:form id = "formLancamento" >
+		
+			<h:panelGrid columns="2" cellpadding="2" cellspacing="2">
+				<f:facet name="header">
+					<h:outputText value="Lançamento de Nota Fiscal" style="line-height:2.5;"/>
+				</f:facet>
+				
+				<h:outputLabel value="Nº Nota Fiscal:"/>
+				<h:inputText value="#{lancamentoBean.lancamento.numeroNotaFiscal}"/>
+				
+				<h:outputLabel value="Origem:"/>
+				<h:inputText value="#{lancamentoBean.lancamento.empresaOrigem}"/>
+				
+				<h:outputLabel value="Destino:"/>
+				<h:inputText value="#{lancamentoBean.lancamento.empresaDestino}"/>
+				
+				<br/>
+				
+				<h:panelGrid columns="2" cellpadding="2">
+					<h:commandButton value="Salvar" action="#{lancamentoBean.salvar}"/>
+					<h:commandButton value="Limpar" type="reset" onclick="return confirm('Deseja descartar as informações?');"/>
+				</h:panelGrid>		
+			</h:panelGrid>
+			
+		</h:form>
+		
+		<br/> <br/>
+		
+		<!-- Lista dos lançamentos realizados pelo usuário ativo -->
+		<h:form>
+			<h:dataTable value="#{lancamentoBean.lancamentos}" var="lancamento" border="2" cellpadding="3" cellspacing="2">
+				<f:facet name="header">Meus Lançamentos</f:facet>
+			
+				<h:column>
+					<f:facet name="header">ID</f:facet>
+					<h:outputText value="#{lancamento.id}"/>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Nº Nota Fiscal</f:facet>
+					<h:outputText value="#{lancamento.numeroNotaFiscal}"/>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Origem</f:facet>
+					<h:outputText value="#{lancamento.empresaOrigem}"/>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Destino</f:facet>
+					<h:outputText value="#{lancamento.empresaDestino}"/>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Operador</f:facet>
+					<h:outputText value="#{lancamento.usuario.nome}"/>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Editar</f:facet>
+					<h:commandLink value="Editar">
+						<f:setPropertyActionListener value="#{lancamento}" target="#{lancamentoBean.lancamento}"/>
+					</h:commandLink>
+				</h:column>
+			
+				<h:column>
+					<f:facet name="header">Excluir</f:facet>
+					<h:commandLink value="Excluir" action="#{lancamentoBean.excluir}" onclick="return confirm('Deseja excluir este registro?');">
+						<f:setPropertyActionListener value="#{lancamento}" target="#{lancamentoBean.lancamento}"/>
+					</h:commandLink>
+				</h:column>
+			
+			</h:dataTable>
+		</h:form>
+		
+	</h:body>
+</html>

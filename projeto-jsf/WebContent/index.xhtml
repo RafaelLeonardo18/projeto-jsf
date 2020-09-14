@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>Início</title>
+	</h:head>
+	
+	<h:body style="margin-left: 5%; margin-top: 2%">
+	
+		<!-- Painel de navegação -->
+		<h:form>
+			<h:panelGrid columns="3" cellpadding="2">
+				<h:commandButton value="Início"/>
+				<h:commandButton value="Lançamentos" action="Lancamento"/>
+				<h:commandButton value="Trocar usuário" action="Login"/>
+			</h:panelGrid>
+		</h:form>
+
+		<h:form>
+			<!-- Formulário usando Panel Grid -->
+			<h:panelGrid columns="2" cellpadding="2">
+				<f:facet name="header"> Cadastro de usuário </f:facet>
+				<br/>
+				<h:graphicImage library="img" name="user.jpg" height="30" width="30"/>
+				 
+				<h:outputLabel id ="labelId" value = "ID: "/>
+				<h:inputText id="id" name="id" required="true" value="#{pessoaBean.pessoa.id}"/>
+				 
+				<h:outputLabel id ="labelNome" value = "Nome: "/>
+				<h:inputText id="nome" name="nome" required="true" value="#{pessoaBean.pessoa.nome}"/>
+				 
+				<h:outputLabel id ="labelSobrenome" value = "Sobrenome: "/>
+				<h:inputText id="sobrenome" name="sobrenome" required="true" value="#{pessoaBean.pessoa.sobrenome}"/>
+				 
+				<h:outputLabel id ="labelIdade" value = "Idade: "/>
+				<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}"/>
+				
+				<h:outputLabel id ="labelLogin" value = "Login: "/>
+				<h:inputText id ="login" name="login" required="true" value="#{pessoaBean.pessoa.login}"/>
+				
+				<h:outputLabel id ="labelSenha" value = "Senha: "/>
+				<h:inputSecret id ="senha" name="senha" required="true" value="#{pessoaBean.pessoa.senha}"/>
+				 
+				<h:outputLabel id="labelSexo" value="Sexo: "/>
+				<h:selectOneMenu id="sexo" value="#{pessoaBean.pessoa.sexo}" style="width:100%">
+				 	<f:selectItem itemValue="Masculino" itemLabel="Masculino"/>
+				 	<f:selectItem itemValue="Feminino" itemLabel="Feminino"/>
+				</h:selectOneMenu>
+				
+				<h:outputLabel id="labelPerfil" value="Perfil: "/>
+				<h:selectOneMenu id="perfil" value="#{pessoaBean.pessoa.perfil}" style="width:100%">
+				 	<f:selectItem itemValue="Administrador" itemLabel="Administrador"/>
+				 	<f:selectItem itemValue="Padrão" itemLabel="Padrão"/>
+				</h:selectOneMenu>
+				 
+				<h:outputLabel id="labelFramework" value="Framework: "/>
+				<h:selectManyMenu id="framework" value="#{pessoaBean.pessoa.frameworks}" style="width:100%; height:70px;">
+				 	<f:selectItem itemValue="Hibernate" itemLabel="Hibernate"/>
+				 	<f:selectItem itemValue="Spring Boot" itemLabel="Spring Boot"/>
+					<f:selectItem itemValue="Angular" itemLabel="Angular"/>
+					<f:selectItem itemValue="React.JS" itemLabel="React.JS"/>
+				</h:selectManyMenu>
+				 
+				<h:outputLabel id="labelAtivo" value="Ativo: "/>
+				<h:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
+				 
+				 <!-- Botões -->
+				 <br/>
+				 <h:panelGrid columns="2" cellpadding="2">
+				 	<h:commandButton id="btnSalvar" action="#{pessoaBean.salvar}" image="resources/img/save.png" title="Salvar"/>
+			 		<h:commandButton id="btnReset" image="resources/img/clean.jpg" title="Limpar" type="reset">
+			 			<f:ajax execute="btnReset" render="@form"/>
+			 		</h:commandButton>
+				 </h:panelGrid>			 
+				 
+			</h:panelGrid>
+			
+			<br/>
+		
+			<!-- Tabela dos usuários cadastrados -->
+			<h:dataTable value="#{pessoaBean.pessoas}" var="pessoa" border="2" cellspacing="2" cellpadding="5">
+				<f:facet name="header"> <h:outputText value="Lista de pessoas cadastradas"/> </f:facet>
+				
+					<h:column>
+						<f:facet name="header">ID</f:facet>
+						<h:outputText value="#{pessoa.id}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{pessoa.nome}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Sobrenome</f:facet>
+						<h:outputText value="#{pessoa.sobrenome}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Idade</f:facet>
+						<h:outputText value="#{pessoa.idade}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Sexo</f:facet>
+						<h:outputText value="#{pessoa.sexo}"/>
+					</h:column>
+					
+					<h:column rendered="#{pessoaBean.acesso('Administrador')}">
+						<h:commandLink value="Editar" immediate="true">
+							<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
+							<f:ajax render="@form" />
+						</h:commandLink>
+					</h:column>
+					
+					<h:column rendered="#{pessoaBean.acesso('Administrador')}">
+						<h:commandLink value="Excluir" immediate="true" action="#{pessoaBean.excluir}" onclick="return confirm('Deseja remover este usuário?')">
+							<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
+							<f:ajax render="@form" />
+						</h:commandLink>
+					</h:column>
+					
+			</h:dataTable>
+			<!-- Fim do formulário -->
+		</h:form>
+		
+	</h:body>
+</html>
