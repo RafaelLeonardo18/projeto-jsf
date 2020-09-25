@@ -4,6 +4,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	  
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 		<title>Início</title>
@@ -14,7 +15,7 @@
 		<h:messages infoStyle="color:red"/>
 	
 		<!-- Painel de navegação -->
-		<ui:include src="/menu.xhtml"/>
+		<ui:include src="/templates/menu.xhtml"/>
 
 		<h:form>
 			<!-- Formulário usando Panel Grid -->
@@ -34,6 +35,11 @@
 				 
 				<h:outputLabel id ="labelIdade" value = "Idade: "/>
 				<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}"/>
+				
+				<h:outputLabel id="labelDataNascimento" value="Data Nascimento: "/>
+				<h:inputText id="dataNascimento" name="dataNascimento" value="#{pessoaBean.pessoa.dataNascimento}">
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:inputText>
 				
 				<h:outputLabel id ="labelLogin" value = "Login: "/>
 				<h:inputText id ="login" name="login" required="true" value="#{pessoaBean.pessoa.login}"/>

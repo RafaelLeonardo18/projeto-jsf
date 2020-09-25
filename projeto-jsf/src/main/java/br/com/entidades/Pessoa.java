@@ -1,6 +1,7 @@
 package br.com.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @NamedQueries({
 	@NamedQuery (name = "login", query = "select p from Pessoa p where p.login = :login and p.senha = :senha")
@@ -51,11 +54,9 @@ public class Pessoa  implements Serializable{
 	@Column
 	private String perfil;
 	
-	/*
-	@Column (nullable = false)
+	
 	@Temporal (TemporalType.DATE)
-	private Date dataNascimento;
-	*/
+	private Date dataNascimento = new Date();
 	
 	//Setters e Getters
 	public void setId(int id) {
@@ -138,7 +139,6 @@ public class Pessoa  implements Serializable{
 		return perfil;
 	}
 	
-	/*
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
@@ -146,7 +146,6 @@ public class Pessoa  implements Serializable{
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
-	*/
 
 	@Override
 	public int hashCode() {
