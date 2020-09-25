@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" 
 	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:f="http://java.sun.com/jsf/core">
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 		<title>Início</title>
@@ -10,14 +11,10 @@
 	
 	<h:body style="margin-left: 5%; margin-top: 2%">
 	
+		<h:messages infoStyle="color:red"/>
+	
 		<!-- Painel de navegação -->
-		<h:form>
-			<h:panelGrid columns="3" cellpadding="2">
-				<h:commandButton value="Início"/>
-				<h:commandButton value="Lançamentos" action="Lancamento"/>
-				<h:commandButton value="Trocar usuário" action="Login"/>
-			</h:panelGrid>
-		</h:form>
+		<ui:include src="/menu.xhtml"/>
 
 		<h:form>
 			<!-- Formulário usando Panel Grid -->
@@ -25,7 +22,7 @@
 				<f:facet name="header"> Cadastro de usuário </f:facet>
 				<br/>
 				<h:graphicImage library="img" name="user.jpg" height="30" width="30"/>
-				 
+							 
 				<h:outputLabel id ="labelId" value = "ID: "/>
 				<h:inputText id="id" name="id" required="true" value="#{pessoaBean.pessoa.id}"/>
 				 
@@ -45,10 +42,10 @@
 				<h:inputSecret id ="senha" name="senha" required="true" value="#{pessoaBean.pessoa.senha}"/>
 				 
 				<h:outputLabel id="labelSexo" value="Sexo: "/>
-				<h:selectOneMenu id="sexo" value="#{pessoaBean.pessoa.sexo}" style="width:100%">
-				 	<f:selectItem itemValue="Masculino" itemLabel="Masculino"/>
+				<h:selectOneRadio id="sexo" value="#{pessoaBean.pessoa.sexo}" style="width:100%">
+				 	<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
 				 	<f:selectItem itemValue="Feminino" itemLabel="Feminino"/>
-				</h:selectOneMenu>
+				</h:selectOneRadio>
 				
 				<h:outputLabel id="labelPerfil" value="Perfil: "/>
 				<h:selectOneMenu id="perfil" value="#{pessoaBean.pessoa.perfil}" style="width:100%">
@@ -66,6 +63,13 @@
 				 
 				<h:outputLabel id="labelAtivo" value="Ativo: "/>
 				<h:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
+				
+				<h:outputLabel value="Linguagens de programação"/>
+				<h:selectManyCheckbox>
+					<f:selectItem itemValue="Java" itemLabel="Java"/>
+					<f:selectItem itemValue="PHP" itemLabel="PHP"/>
+					<f:selectItem itemValue="Python" itemLabel="Python"/>
+				</h:selectManyCheckbox>
 				 
 				 <!-- Botões -->
 				 <br/>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -19,7 +20,6 @@ public class PessoaBean {
 	private Pessoa pessoa = new Pessoa();
 	private DaoGenerico <Pessoa> daoGenerico = new DaoGenerico <Pessoa> ();
 	private List <Pessoa> pessoas = new ArrayList <Pessoa>();
-	private String mensagem;
 	
 /*
 * **********************************************************************************
@@ -31,6 +31,7 @@ public class PessoaBean {
 		daoGenerico.salvar(pessoa);
 		pessoa = new Pessoa();
 		listar();
+		exibeMensagem("Usuário cadastrado com sucesso!");
 		return "";
 	}
 	
@@ -74,22 +75,29 @@ public class PessoaBean {
 				FacesContext context = FacesContext.getCurrentInstance();
 				ExternalContext externalContext = context.getExternalContext();
 				externalContext.getSessionMap().put("usuario", pessoaUser);
-				this.setMensagem("");
 				url = "index.jsf";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.setMensagem("Usuário ou senha incorretos");
+			exibeMensagem("Usuário ou Senha incorretos");
 			url = "Login.jsf";
 		}
 		return url;
 	}
 	
+	//Libera a visualização de certos componentes de acordo com o perfil do usuário
 	public boolean acesso(String acesso) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = context.getExternalContext();
 		Pessoa pessoaUser = (Pessoa) externalContext.getSessionMap().get("usuario");
 		return pessoaUser.getPerfil().equals(acesso);
+	}
+	
+	//Exibe mensgaens na tela para o usuário
+	public void exibeMensagem(String msg) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage message = new FacesMessage(msg);
+		context.addMessage(null, message);
 	}
 	
 /*
@@ -119,14 +127,6 @@ public class PessoaBean {
 
 	public void setPessoas(List<Pessoa> pessoas) {
 		this.pessoas = pessoas;
-	}
-	
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
-	
-	public String getMensagem() {
-		return mensagem;
 	}
 
 /*
