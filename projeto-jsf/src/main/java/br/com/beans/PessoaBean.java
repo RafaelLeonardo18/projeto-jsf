@@ -1,5 +1,10 @@
 package br.com.beans;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -98,6 +104,30 @@ public class PessoaBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = new FacesMessage(msg);
 		context.addMessage(null, message);
+	}
+	
+	//Método usado para limpar os dados do formulário
+	public String novaPessoa() {
+		pessoa = new Pessoa();
+		return "";
+	}
+	
+	//Método de pesquisa de cep via web service
+	public void pesquisaCep(AjaxBehavior evento) {
+		try {
+			URL url = new URL("https://viacep.com.br/ws/" + pessoa.getCep() + "/json/");
+			URLConnection connection = url.openConnection();
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			String cep = "";
+			StringBuilder jsonCep = new StringBuilder();
+			while ((cep = bufferedReader.readLine()) != null) {
+				jsonCep.append(cep);
+			}
+			System.out.println(jsonCep);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 /*

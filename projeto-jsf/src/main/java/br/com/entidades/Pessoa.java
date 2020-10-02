@@ -54,6 +54,9 @@ public class Pessoa  implements Serializable{
 	@Column
 	private String perfil;
 	
+	@Column
+	private String cep;
+	
 	
 	@Temporal (TemporalType.DATE)
 	private Date dataNascimento = new Date();
@@ -145,6 +148,14 @@ public class Pessoa  implements Serializable{
 	
 	public Date getDataNascimento() {
 		return dataNascimento;
+	}
+	
+	public void setCep (String cep) {
+		this.cep = cep;
+	}
+	
+	public String getCep() {
+		return cep;
 	}
 
 	@Override

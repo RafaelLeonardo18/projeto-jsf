@@ -8,6 +8,7 @@
 		<!-- Entidades do projeto -->
 		<class>br.com.entidades.Pessoa</class>
 		<class>br.com.entidades.Lancamento</class>
+		<class>br.com.entidades.Logradouro</class>
 		
 		<!-- Configuração do Hibernate -->
 		<properties>

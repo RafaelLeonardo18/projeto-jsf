@@ -28,17 +28,17 @@
 				<h:inputText id="id" name="id" required="true" value="#{pessoaBean.pessoa.id}"/>
 				 
 				<h:outputLabel id ="labelNome" value = "Nome: "/>
-				<h:inputText id="nome" name="nome" required="true" value="#{pessoaBean.pessoa.nome}"/>
+				<h:inputText id="nome" name="nome" required="true" value="#{pessoaBean.pessoa.nome}" requiredMessage="Informe o nome"/>
 				 
 				<h:outputLabel id ="labelSobrenome" value = "Sobrenome: "/>
-				<h:inputText id="sobrenome" name="sobrenome" required="true" value="#{pessoaBean.pessoa.sobrenome}"/>
+				<h:inputText id="sobrenome" name="sobrenome" required="true" value="#{pessoaBean.pessoa.sobrenome}" requiredMessage="Informe o sobrenome"/>
 				 
 				<h:outputLabel id ="labelIdade" value = "Idade: "/>
-				<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}"/>
+				<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}" requiredMessage="Informe a idade"/>
 				
 				<h:outputLabel id="labelDataNascimento" value="Data Nascimento: "/>
-				<h:inputText id="dataNascimento" name="dataNascimento" value="#{pessoaBean.pessoa.dataNascimento}">
-					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				<h:inputText id="dataNascimento" name="dataNascimento" value="#{pessoaBean.pessoa.dataNascimento}" converterMessage="Data inválida" required="true" requiredMessage="Informe a data de nascimento">
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
 				</h:inputText>
 				
 				<h:outputLabel id ="labelLogin" value = "Login: "/>
@@ -70,6 +70,11 @@
 				<h:outputLabel id="labelAtivo" value="Ativo: "/>
 				<h:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
 				
+				<h:outputLabel value="CEP: "/>
+				<h:inputText value="#{pessoaBean.pessoa.cep}">
+					<f:ajax event="blur" execute="@this" listener="#{pessoaBean.pesquisaCep}"/>
+				</h:inputText>
+				
 				<h:outputLabel value="Linguagens de programação"/>
 				<h:selectManyCheckbox>
 					<f:selectItem itemValue="Java" itemLabel="Java"/>
@@ -81,16 +86,19 @@
 				 <br/>
 				 <h:panelGrid columns="2" cellpadding="2">
 				 	<h:commandButton id="btnSalvar" action="#{pessoaBean.salvar}" image="resources/img/save.png" title="Salvar"/>
-			 		<h:commandButton id="btnReset" image="resources/img/clean.jpg" title="Limpar" type="reset">
+			 		<h:commandButton id="btnReset" action="#{pessoaBean.novaPessoa}" image="resources/img/clean.jpg" title="Limpar">
 			 			<f:ajax execute="btnReset" render="@form"/>
 			 		</h:commandButton>
 				 </h:panelGrid>			 
 				 
 			</h:panelGrid>
+		</h:form>
+		<!-- Fim do formulário de cadastro -->
 			
 			<br/>
 		
-			<!-- Tabela dos usuários cadastrados -->
+		<!-- Tabela dos usuários cadastrados -->
+		<h:form>
 			<h:dataTable value="#{pessoaBean.pessoas}" var="pessoa" border="2" cellspacing="2" cellpadding="5">
 				<f:facet name="header"> <h:outputText value="Lista de pessoas cadastradas"/> </f:facet>
 				
@@ -122,19 +130,17 @@
 					<h:column rendered="#{pessoaBean.acesso('Administrador')}">
 						<h:commandLink value="Editar" immediate="true">
 							<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
-							<f:ajax render="@form" />
 						</h:commandLink>
 					</h:column>
 					
 					<h:column rendered="#{pessoaBean.acesso('Administrador')}">
 						<h:commandLink value="Excluir" immediate="true" action="#{pessoaBean.excluir}" onclick="return confirm('Deseja remover este usuário?')">
 							<f:setPropertyActionListener target="#{pessoaBean.pessoa}" value="#{pessoa}" />
-							<f:ajax render="@form" />
 						</h:commandLink>
 					</h:column>
 					
 			</h:dataTable>
-			<!-- Fim do formulário -->
+			<!-- Fim do datatable -->
 		</h:form>
 		
 	</h:body>
