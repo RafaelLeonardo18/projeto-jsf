@@ -1,12 +1,15 @@
 package br.com.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Logradouro implements Serializable {
@@ -15,7 +18,7 @@ public class Logradouro implements Serializable {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.AUTO )
-	private Long id;
+	private Integer id;
 	
 	@Column (nullable = false, length = 10)
 	private String cep;
@@ -24,7 +27,7 @@ public class Logradouro implements Serializable {
 	private String tipoLogradouro;
 	
 	@Column (nullable = false, length = 120)
-	private String nomeLogradouro;
+	private String logradouro;
 	
 	@Column
 	private int numeroLogradouro;
@@ -36,17 +39,20 @@ public class Logradouro implements Serializable {
 	private String bairro;
 	
 	@Column (nullable = false, length = 120)
-	private String cidade;
+	private String localidade;
 	
 	@Column (nullable = false)
-	private String estado;
+	private String uf;
+	
+	@OneToMany (mappedBy = "logradouro", fetch = FetchType.EAGER)
+	private List <Pessoa> pessoas;
 	
 	//Setters e Getters
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -66,12 +72,12 @@ public class Logradouro implements Serializable {
 		this.tipoLogradouro = tipoLogradouro;
 	}
 
-	public String getNomeLogradouro() {
-		return nomeLogradouro;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setNomeLogradouro(String nomeLogradouro) {
-		this.nomeLogradouro = nomeLogradouro;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 	
 	public void setNumeroLogradouro(int numeroLogradouro) {
@@ -98,27 +104,43 @@ public class Logradouro implements Serializable {
 		this.bairro = bairro;
 	}
 
-	public String getCidade() {
-		return cidade;
+	public String getLocalidade() {
+		return localidade;
 	}
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
 	}
 
-	public String getEstado() {
-		return estado;
+	public String getUf() {
+		return uf;
 	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	
+	public List<Pessoa> getPessoas() {
+		return pessoas;
+	}
+
+	public void setPessoas(List<Pessoa> pessoas) {
+		this.pessoas = pessoas;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((bairro == null) ? 0 : bairro.hashCode());
+		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
+		result = prime * result + ((complemento == null) ? 0 : complemento.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((localidade == null) ? 0 : localidade.hashCode());
+		result = prime * result + ((logradouro == null) ? 0 : logradouro.hashCode());
+		result = prime * result + numeroLogradouro;
+		result = prime * result + ((tipoLogradouro == null) ? 0 : tipoLogradouro.hashCode());
+		result = prime * result + ((uf == null) ? 0 : uf.hashCode());
 		return result;
 	}
 
@@ -131,13 +153,60 @@ public class Logradouro implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Logradouro other = (Logradouro) obj;
+		if (bairro == null) {
+			if (other.bairro != null)
+				return false;
+		} else if (!bairro.equals(other.bairro))
+			return false;
+		if (cep == null) {
+			if (other.cep != null)
+				return false;
+		} else if (!cep.equals(other.cep))
+			return false;
+		if (complemento == null) {
+			if (other.complemento != null)
+				return false;
+		} else if (!complemento.equals(other.complemento))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (localidade == null) {
+			if (other.localidade != null)
+				return false;
+		} else if (!localidade.equals(other.localidade))
+			return false;
+		if (logradouro == null) {
+			if (other.logradouro != null)
+				return false;
+		} else if (!logradouro.equals(other.logradouro))
+			return false;
+		if (numeroLogradouro != other.numeroLogradouro)
+			return false;
+		if (tipoLogradouro == null) {
+			if (other.tipoLogradouro != null)
+				return false;
+		} else if (!tipoLogradouro.equals(other.tipoLogradouro))
+			return false;
+		if (uf == null) {
+			if (other.uf != null)
+				return false;
+		} else if (!uf.equals(other.uf))
+			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Logradouro [id=" + id + ", cep=" + cep + ", tipoLogradouro=" + tipoLogradouro + ", logradouro="
+				+ logradouro + ", numeroLogradouro=" + numeroLogradouro + ", complemento=" + complemento + ", bairro="
+				+ bairro + ", localidade=" + localidade + ", uf=" + uf + "]";
+	}
+	
+	
+	
 	
 //Fim da classe
 }

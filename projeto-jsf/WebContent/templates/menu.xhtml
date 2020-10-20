@@ -7,9 +7,9 @@
 	<h:body>
 		<h:form>
 			<h:panelGrid columns="3" cellpadding="2">
-				<h:commandButton value="Início" action="index"/>
-				<h:commandButton value="Lançamentos" action="Lancamento"/>
-				<h:commandButton value="Trocar usuário" action="Login"/>
+				<h:commandButton value="Início" action="index.jsf"/>
+				<h:commandButton value="Lançamentos" action="Lancamento.jsf"/>
+				<h:commandButton value="Trocar usuário" action="#{pessoaBean.logout}"/>
 			</h:panelGrid>
 		</h:form>
 	</h:body>

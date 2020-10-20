@@ -1,10 +1,5 @@
 package br.com.beans;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +7,13 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
+import javax.faces.event.AjaxBehaviorEvent;
+import com.br.service.AutenticacaoService;
+import com.br.service.CepService;
 import br.com.dao.DaoGenerico;
+import br.com.entidades.Logradouro;
 import br.com.entidades.Pessoa;
 
 @ViewScoped
@@ -24,9 +21,10 @@ import br.com.entidades.Pessoa;
 
 public class PessoaBean {
 	private Pessoa pessoa = new Pessoa();
-	private DaoGenerico <Pessoa> daoGenerico = new DaoGenerico <Pessoa> ();
+	private Logradouro logradouro = new Logradouro();
+	private DaoGenerico <Pessoa> daoPessoa = new DaoGenerico <Pessoa> ();
+	private DaoGenerico <Logradouro> daoLogradouro = new DaoGenerico <Logradouro> ();
 	private List <Pessoa> pessoas = new ArrayList <Pessoa>();
-	
 /*
 * **********************************************************************************
 * Métodos de persistência de dados
@@ -34,8 +32,11 @@ public class PessoaBean {
 */	
 	//Método de salvar a pessoa
 	public String salvar() {
-		daoGenerico.salvar(pessoa);
+		daoLogradouro.salvar(logradouro);
+		pessoa.setLogradouro(logradouro);
+		daoPessoa.salvar(pessoa);
 		pessoa = new Pessoa();
+		logradouro = new Logradouro();
 		listar();
 		exibeMensagem("Usuário cadastrado com sucesso!");
 		return "";
@@ -43,15 +44,18 @@ public class PessoaBean {
 	
 	//Método de alteração de um usuário
 	public String alterar() {
-		daoGenerico.atualizar(pessoa);
+		daoLogradouro.atualizar(logradouro);
+		pessoa.setLogradouro(logradouro);
+		daoPessoa.atualizar(pessoa);
 		pessoa = new Pessoa();
+		logradouro = new Logradouro();
 		listar();
 		return "";
 	}
 	
 	//Método de excluir a pessoa
 	public String excluir() {
-		daoGenerico.excluir(pessoa);
+		daoPessoa.excluir(pessoa);
 		pessoa = new Pessoa();
 		listar();
 		return "";
@@ -60,7 +64,7 @@ public class PessoaBean {
 	//Método de listar as pessoas cadastradas
 	@PostConstruct
 	private void listar() {
-		this.pessoas = daoGenerico.listar(Pessoa.class);
+		this.pessoas = daoPessoa.listar(Pessoa.class);
 	}
 
 /*
@@ -71,24 +75,12 @@ public class PessoaBean {
 	
 	//Método de validação do usuário do sistema
 	public String validarUsuario () {
-		String url = null;
-		try {
-			Pessoa pessoaUser = (Pessoa) daoGenerico.geEntityManager().createNamedQuery("login")
-					.setParameter("login", this.pessoa.getLogin())
-					.setParameter("senha", this.pessoa.getSenha())
-					.getSingleResult();
-			if (pessoaUser != null) {
-				FacesContext context = FacesContext.getCurrentInstance();
-				ExternalContext externalContext = context.getExternalContext();
-				externalContext.getSessionMap().put("usuario", pessoaUser);
-				url = "index.jsf";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			exibeMensagem("Usuário ou Senha incorretos");
-			url = "Login.jsf";
-		}
-		return url;
+		return AutenticacaoService.autenticar(pessoa);
+	}
+	
+	//Faz o logout do usuário
+	public String logout() {
+		return AutenticacaoService.logout();
 	}
 	
 	//Libera a visualização de certos componentes de acordo com o perfil do usuário
@@ -109,25 +101,13 @@ public class PessoaBean {
 	//Método usado para limpar os dados do formulário
 	public String novaPessoa() {
 		pessoa = new Pessoa();
+		logradouro = new Logradouro();
 		return "";
 	}
 	
 	//Método de pesquisa de cep via web service
-	public void pesquisaCep(AjaxBehavior evento) {
-		try {
-			URL url = new URL("https://viacep.com.br/ws/" + pessoa.getCep() + "/json/");
-			URLConnection connection = url.openConnection();
-			InputStream inputStream = connection.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-			String cep = "";
-			StringBuilder jsonCep = new StringBuilder();
-			while ((cep = bufferedReader.readLine()) != null) {
-				jsonCep.append(cep);
-			}
-			System.out.println(jsonCep);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void pesquisaCep(AjaxBehaviorEvent event) {
+		logradouro = CepService.pesquisaCep(logradouro.getCep());
 	}
 	
 /*
@@ -143,20 +123,36 @@ public class PessoaBean {
 		this.pessoa = pessoa;
 	}
 
-	public DaoGenerico<Pessoa> getDaoGenerico() {
-		return daoGenerico;
-	}
-
-	public void setDaoGenerico(DaoGenerico<Pessoa> daoGenerico) {
-		this.daoGenerico = daoGenerico;
-	}
-
 	public List<Pessoa> getPessoas() {
 		return pessoas;
 	}
 
 	public void setPessoas(List<Pessoa> pessoas) {
 		this.pessoas = pessoas;
+	}
+
+	public Logradouro getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(Logradouro logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public DaoGenerico<Pessoa> getDaoPessoa() {
+		return daoPessoa;
+	}
+
+	public void setDaoPessoa(DaoGenerico<Pessoa> daoPessoa) {
+		this.daoPessoa = daoPessoa;
+	}
+
+	public DaoGenerico<Logradouro> getDaoLogradouro() {
+		return daoLogradouro;
+	}
+
+	public void setDaoLogradouro(DaoGenerico<Logradouro> daoLogradouro) {
+		this.daoLogradouro = daoLogradouro;
 	}
 
 /*

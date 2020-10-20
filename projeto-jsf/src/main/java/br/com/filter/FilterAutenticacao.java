@@ -17,7 +17,7 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import br.com.entidades.Pessoa;
 import br.com.jpa.JPAutil;
 
-@WebFilter (urlPatterns = {"/index.xhtml", "/Lancamento.xhtml", "/Teste01.xhtml"})
+@WebFilter (urlPatterns = {"/index.jsf", "/Lancamento.jsf"})
 public class FilterAutenticacao implements Filter {
 
 	@Override

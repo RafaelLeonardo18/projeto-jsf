@@ -17,86 +17,118 @@
 		<!-- Painel de navegação -->
 		<ui:include src="/templates/menu.xhtml"/>
 
-		<h:form>
+		<h:form>	
 			<!-- Formulário usando Panel Grid -->
 			<h:panelGrid columns="2" cellpadding="2">
-				<f:facet name="header"> Cadastro de usuário </f:facet>
-				<br/>
-				<h:graphicImage library="img" name="user.jpg" height="30" width="30"/>
-							 
-				<h:outputLabel id ="labelId" value = "ID: "/>
-				<h:inputText id="id" name="id" required="true" value="#{pessoaBean.pessoa.id}"/>
-				 
-				<h:outputLabel id ="labelNome" value = "Nome: "/>
-				<h:inputText id="nome" name="nome" required="true" value="#{pessoaBean.pessoa.nome}" requiredMessage="Informe o nome"/>
-				 
-				<h:outputLabel id ="labelSobrenome" value = "Sobrenome: "/>
-				<h:inputText id="sobrenome" name="sobrenome" required="true" value="#{pessoaBean.pessoa.sobrenome}" requiredMessage="Informe o sobrenome"/>
-				 
-				<h:outputLabel id ="labelIdade" value = "Idade: "/>
-				<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}" requiredMessage="Informe a idade"/>
+				<h:panelGroup>
+					<h:panelGrid columns="2" cellpadding="2">
+					
+						<f:facet name="header"> Cadastro de usuário </f:facet>
+						<br/>
+						<h:graphicImage library="img" name="user.jpg" height="30" width="30"/>
+						 
+						<h:outputLabel id ="labelId" value = "ID: "/>
+						<h:inputText id="id" name="id" required="true" value="#{pessoaBean.pessoa.id}"/>
+			 
+						<h:outputLabel id ="labelNome" value = "Nome: "/>
+						<h:inputText id="nome" name="nome" required="true" value="#{pessoaBean.pessoa.nome}" requiredMessage="Informe o nome"/>
+			 
+						<h:outputLabel id ="labelSobrenome" value = "Sobrenome: "/>
+						<h:inputText id="sobrenome" name="sobrenome" required="true" value="#{pessoaBean.pessoa.sobrenome}" requiredMessage="Informe o sobrenome"/>
+			 
+						<h:outputLabel id ="labelIdade" value = "Idade: "/>
+						<h:inputText id ="idade" name="idade" required="true" value="#{pessoaBean.pessoa.idade}" requiredMessage="Informe a idade"/>
 				
-				<h:outputLabel id="labelDataNascimento" value="Data Nascimento: "/>
-				<h:inputText id="dataNascimento" name="dataNascimento" value="#{pessoaBean.pessoa.dataNascimento}" converterMessage="Data inválida" required="true" requiredMessage="Informe a data de nascimento">
-					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
-				</h:inputText>
-				
-				<h:outputLabel id ="labelLogin" value = "Login: "/>
-				<h:inputText id ="login" name="login" required="true" value="#{pessoaBean.pessoa.login}"/>
-				
-				<h:outputLabel id ="labelSenha" value = "Senha: "/>
-				<h:inputSecret id ="senha" name="senha" required="true" value="#{pessoaBean.pessoa.senha}"/>
+						<h:outputLabel id="labelDataNascimento" value="Data Nascimento: "/>
+						<h:inputText id="dataNascimento" name="dataNascimento" value="#{pessoaBean.pessoa.dataNascimento}" converterMessage="Data inválida" required="true" requiredMessage="Informe a data de nascimento">
+							<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+						</h:inputText>
+			
+						<h:outputLabel id ="labelLogin" value = "Login: "/>
+						<h:inputText id ="login" name="login" required="true" value="#{pessoaBean.pessoa.login}"/>
+			
+						<h:outputLabel id ="labelSenha" value = "Senha: "/>
+						<h:inputSecret id ="senha" name="senha" required="true" value="#{pessoaBean.pessoa.senha}"/>
+			 
+						<h:outputLabel id="labelSexo" value="Sexo: "/>
+						<h:selectOneRadio id="sexo" value="#{pessoaBean.pessoa.sexo}" style="width:100%">
+			 				<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+			 				<f:selectItem itemValue="Feminino" itemLabel="Feminino"/>
+						</h:selectOneRadio>
+			
+						<h:outputLabel id="labelPerfil" value="Perfil: "/>
+						<h:selectOneMenu id="perfil" value="#{pessoaBean.pessoa.perfil}" style="width:100%">
+			 				<f:selectItem itemValue="Administrador" itemLabel="Administrador"/>
+			 				<f:selectItem itemValue="Padrão" itemLabel="Padrão"/>
+						</h:selectOneMenu>
+			 
+						<h:outputLabel id="labelFramework" value="Framework: "/>
+						<h:selectManyMenu id="framework" value="#{pessoaBean.pessoa.frameworks}" style="width:100%; height:70px;">
+			 				<f:selectItem itemValue="Hibernate" itemLabel="Hibernate"/>
+			 				<f:selectItem itemValue="Spring Boot" itemLabel="Spring Boot"/>
+							<f:selectItem itemValue="Angular" itemLabel="Angular"/>
+							<f:selectItem itemValue="React.JS" itemLabel="React.JS"/>
+						</h:selectManyMenu>
 				 
-				<h:outputLabel id="labelSexo" value="Sexo: "/>
-				<h:selectOneRadio id="sexo" value="#{pessoaBean.pessoa.sexo}" style="width:100%">
-				 	<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
-				 	<f:selectItem itemValue="Feminino" itemLabel="Feminino"/>
-				</h:selectOneRadio>
+						<h:outputLabel id="labelAtivo" value="Ativo: "/>
+						<h:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
+			
+						<h:outputLabel value="Linguagens de programação"/>
+						<h:selectManyCheckbox>
+							<f:selectItem itemValue="Java" itemLabel="Java"/>
+							<f:selectItem itemValue="PHP" itemLabel="PHP"/>
+							<f:selectItem itemValue="Python" itemLabel="Python"/>
+						</h:selectManyCheckbox>
+					</h:panelGrid>
+				</h:panelGroup>
 				
-				<h:outputLabel id="labelPerfil" value="Perfil: "/>
-				<h:selectOneMenu id="perfil" value="#{pessoaBean.pessoa.perfil}" style="width:100%">
-				 	<f:selectItem itemValue="Administrador" itemLabel="Administrador"/>
-				 	<f:selectItem itemValue="Padrão" itemLabel="Padrão"/>
-				</h:selectOneMenu>
-				 
-				<h:outputLabel id="labelFramework" value="Framework: "/>
-				<h:selectManyMenu id="framework" value="#{pessoaBean.pessoa.frameworks}" style="width:100%; height:70px;">
-				 	<f:selectItem itemValue="Hibernate" itemLabel="Hibernate"/>
-				 	<f:selectItem itemValue="Spring Boot" itemLabel="Spring Boot"/>
-					<f:selectItem itemValue="Angular" itemLabel="Angular"/>
-					<f:selectItem itemValue="React.JS" itemLabel="React.JS"/>
-				</h:selectManyMenu>
-				 
-				<h:outputLabel id="labelAtivo" value="Ativo: "/>
-				<h:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
-				
-				<h:outputLabel value="CEP: "/>
-				<h:inputText value="#{pessoaBean.pessoa.cep}">
-					<f:ajax event="blur" execute="@this" listener="#{pessoaBean.pesquisaCep}"/>
-				</h:inputText>
-				
-				<h:outputLabel value="Linguagens de programação"/>
-				<h:selectManyCheckbox>
-					<f:selectItem itemValue="Java" itemLabel="Java"/>
-					<f:selectItem itemValue="PHP" itemLabel="PHP"/>
-					<f:selectItem itemValue="Python" itemLabel="Python"/>
-				</h:selectManyCheckbox>
-				 
-				 <!-- Botões -->
-				 <br/>
-				 <h:panelGrid columns="2" cellpadding="2">
-				 	<h:commandButton id="btnSalvar" action="#{pessoaBean.salvar}" image="resources/img/save.png" title="Salvar"/>
-			 		<h:commandButton id="btnReset" action="#{pessoaBean.novaPessoa}" image="resources/img/clean.jpg" title="Limpar">
-			 			<f:ajax execute="btnReset" render="@form"/>
-			 		</h:commandButton>
-				 </h:panelGrid>			 
+				<h:panelGroup>
+					<h:panelGrid columns="2" cellpadding="2">
+						<h:outputLabel value="CEP: "/>
+						<h:inputText value="#{pessoaBean.logradouro.cep}">
+							<f:ajax event="blur" execute="@this" listener="#{pessoaBean.pesquisaCep}" 
+									render="logradouro localidade bairro uf"/>
+						</h:inputText>
+						
+						<h:outputLabel value="Logradouro: "/>
+						<h:inputText id = "logradouro" value="#{pessoaBean.logradouro.logradouro}"/>
+						
+						<h:outputLabel value="Tipo Logradouro: "/>
+						<h:selectOneMenu value="#{pessoaBean.logradouro.tipoLogradouro}">
+							<f:selectItem itemLabel="Rua" itemValue="Rua"/>
+							<f:selectItem itemLabel="Avenida" itemValue="Avenida"/>
+							<f:selectItem itemLabel="Estrada" itemValue="Estrada"/>
+							<f:selectItem itemLabel="Rodovia" itemValue="Rodovia"/>							
+						</h:selectOneMenu>
+						
+						<h:outputLabel value="Número: "/>
+						<h:inputText value="#{pessoaBean.logradouro.numeroLogradouro}"/>
+						
+						<h:outputLabel value="Cidade: "/>
+						<h:inputText id = "localidade" value="#{pessoaBean.logradouro.localidade}"/>
+						
+						<h:outputLabel value="Bairro: "/>
+						<h:inputText id = "bairro" value="#{pessoaBean.logradouro.bairro}"/>
+						
+						<h:outputLabel value="Estado: "/>
+						<h:inputText id="uf" value="#{pessoaBean.logradouro.uf}"/>				
+					</h:panelGrid>
+				</h:panelGroup>
+								
+			 	<!-- Botões -->
+			 	<h:panelGroup>
+			 		<h:panelGrid columns="2" cellpadding="2">
+						<h:commandButton id="btnSalvar" action="#{pessoaBean.salvar}" image="resources/img/save.png" title="Salvar"/>
+						<h:commandButton id="btnReset" action="#{pessoaBean.novaPessoa}" image="resources/img/clean.jpg" title="Limpar">
+							<f:ajax execute="btnReset" render="@form"/>
+						</h:commandButton>
+			 		</h:panelGrid>
+			 	</h:panelGroup>		 
 				 
 			</h:panelGrid>
 		</h:form>
 		<!-- Fim do formulário de cadastro -->
-			
-			<br/>
-		
+					
 		<!-- Tabela dos usuários cadastrados -->
 		<h:form>
 			<h:dataTable value="#{pessoaBean.pessoas}" var="pessoa" border="2" cellspacing="2" cellpadding="5">

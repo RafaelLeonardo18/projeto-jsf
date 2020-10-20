@@ -5,24 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-@NamedQueries({
-	@NamedQuery (name = "login", query = "select p from Pessoa p where p.login = :login and p.senha = :senha")
-})
 
 @Entity
 public class Pessoa  implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	//Atributos da entidade
 	@Id
 	@GeneratedValue (strategy = GenerationType.AUTO)
 	private int id;
@@ -54,9 +49,8 @@ public class Pessoa  implements Serializable{
 	@Column
 	private String perfil;
 	
-	@Column
-	private String cep;
-	
+	@ManyToOne (optional = true, fetch = FetchType.EAGER)
+	private Logradouro logradouro;
 	
 	@Temporal (TemporalType.DATE)
 	private Date dataNascimento = new Date();
@@ -149,13 +143,13 @@ public class Pessoa  implements Serializable{
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
-	
-	public void setCep (String cep) {
-		this.cep = cep;
+
+	public Logradouro getLogradouro() {
+		return logradouro;
 	}
-	
-	public String getCep() {
-		return cep;
+
+	public void setLogradouro(Logradouro logradouro) {
+		this.logradouro = logradouro;
 	}
 
 	@Override

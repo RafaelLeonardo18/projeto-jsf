@@ -3,7 +3,7 @@
   <display-name>projeto-jsf</display-name>
   
   <welcome-file-list>
-    <welcome-file>Login.xhtml</welcome-file>
+    <welcome-file>Login.jsf</welcome-file>
   </welcome-file-list>
   
   <servlet>
@@ -14,7 +14,7 @@
   
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.xhtml</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
   
   <session-config>
